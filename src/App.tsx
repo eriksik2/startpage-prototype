@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { LinksWidget } from './LinksWidget';
+import { LinksWidgetEditor } from './LinksWidgetEditor';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             { name: "Twitter", url: "https://twitter.com" },
           ]}
         />
+        <LinksWidgetEditor/>
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
