@@ -1,5 +1,31 @@
 import React from "react";
 import { Link } from "./LinksWidget";
+import { css } from '@linaria/core';
+import { styled } from '@linaria/react';
+
+
+const WidgetEditorBox = styled.div`
+    border: 1px solid #000000;
+    padding: 10px;
+    padding-top: 0px;
+    background-color: #ffffff;
+
+    input.name {
+        margin: 5px;
+        padding: 0px;
+        border: 0;
+        border-bottom: 1px solid #000000;
+        background-color: transparent;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    input.name.small {
+        font-size: 16px;
+    }
+    input.name:focus {
+        outline: none;
+    }
+`;
 
 type StateType = {
     name: string,
@@ -10,7 +36,7 @@ export class LinksWidgetEditor extends React.Component<{}, StateType> {
     constructor(props: {}) {
         super(props);
         this.state = {
-            name: "",
+            name: "New Widget",
             links: [],
         };
 
@@ -27,15 +53,21 @@ export class LinksWidgetEditor extends React.Component<{}, StateType> {
         const data = new FormData(event.target as HTMLFormElement);
         const url = data.get("url") as string;
         const name = new RegExp("^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:.\/\n\?]+)(?:\..+)").exec(url)?.[1] ?? url;
+        const capName = name.charAt(0).toUpperCase() + name.slice(1);
+        const fmtUrl = (url.startsWith("http") || url.startsWith("https")) ? url : "https://" + url;
         const links = this.state.links;
-        links.push({ name: name, url: url });
+        links.push({ name: capName, url: fmtUrl });
         this.setState({ links });
     }
 
     render() {
-        return <div>
-            Widget name: 
-            <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
+        return <WidgetEditorBox>
+            <input
+                className="name"
+                placeholder="Widget name"
+                value={this.state.name}
+                onChange={this.handleNameChange}
+            />
             <br />
             {this.state.links.map((link: Link, index: number) => 
                 <LinksWidgetEditorLink
@@ -56,7 +88,7 @@ export class LinksWidgetEditor extends React.Component<{}, StateType> {
                 <input type="text" name="url"/>
                 <input type="submit" value="Add link"/>
             </form>
-        </div>
+        </WidgetEditorBox>
     }
 }
 
@@ -89,9 +121,7 @@ class LinksWidgetEditorLink extends React.Component<LinksWidgetEditorLinkPropsTy
 
     render() {
         return <div>
-            Name:
-            <input type="text" value={this.props.link.name} onChange={this.handleNameChange}/>
-            Url:
+            <input className="name small" type="text" value={this.props.link.name} onChange={this.handleNameChange}/>
             <input type="text" value={this.props.link.url} onChange={this.handleUrlChange}/>
             <button onClick={this.props.onLinkRemove}>Remove</button>
         </div>;
