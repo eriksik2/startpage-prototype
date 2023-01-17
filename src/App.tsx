@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <QuoteWidget />
+        <QuoteWidget applesPerWeek = {12} />
         <BaseWidget
           data={WidgetData.fromJson(
             {
