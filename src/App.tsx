@@ -5,6 +5,7 @@ import { LinksWidget } from './LinksWidget';
 import { LinksWidgetEditor } from './LinksWidgetEditor';
 import WidgetData from './WidgetData';
 import { BaseWidget } from './BaseWidget';
+import { QuoteWidget } from './QuoteWidget';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <QuoteWidget />
         <BaseWidget
           data={WidgetData.fromJson(
             {
