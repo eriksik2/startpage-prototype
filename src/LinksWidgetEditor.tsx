@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "./LinksWidget";
 
 type StateType = {
     name: string,
     links: Link[],
 };
 
-class LinksWidgetEditor extends React.Component {
+export class LinksWidgetEditor extends React.Component<{}, StateType> {
     constructor(props: {}) {
         super(props);
         this.state = {
@@ -13,6 +14,8 @@ class LinksWidgetEditor extends React.Component {
             links: [],
         };
     }
-}
 
-export default LinksWidgetEditor;
+    render() {
+        return <div></div>
+    }
+}

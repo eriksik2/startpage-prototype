@@ -1,8 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { LinksWidget } from './LinksWidget';
 
-import LinksWidget from './LinksWidget';
 
 function App() {
   return (

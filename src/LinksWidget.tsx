@@ -1,6 +1,6 @@
 import React from "react";
 
-type Link = {
+export type Link = {
     name: string,
     url: string,
 };
@@ -10,7 +10,7 @@ type PropsType = {
     links: Link[],
 };
 
-class LinksWidget extends React.Component<PropsType> {
+export class LinksWidget extends React.Component<PropsType> {
 
     constructor(props: PropsType) {
         super(props);
@@ -31,5 +31,3 @@ class LinksWidget extends React.Component<PropsType> {
         </div>;
     }
 }
-
-export default LinksWidget;

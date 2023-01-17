@@ -1,5 +1,5 @@
 import React from "react";
-import LinksWidget from "./LinksWidget";
+import { LinksWidget } from "./LinksWidget";
 import WidgetData from "./WidgetData";
 
 type PropsType = {
