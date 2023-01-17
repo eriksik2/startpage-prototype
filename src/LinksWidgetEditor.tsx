@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "./LinksWidget";
+import { Link, LinksWidgetPropsType } from "./LinksWidget";
 import { css } from '@linaria/core';
 import { styled } from '@linaria/react';
 
@@ -32,12 +32,17 @@ type StateType = {
     links: Link[],
 };
 
-export class LinksWidgetEditor extends React.Component<{}, StateType> {
-    constructor(props: {}) {
+type PropsType = {
+    data?: LinksWidgetPropsType,
+    onSubmit?: (data: LinksWidgetPropsType) => void,
+};
+
+export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
+    constructor(props: PropsType) {
         super(props);
         this.state = {
-            name: "New Widget",
-            links: [],
+            name: props.data?.name ?? "New Widget",
+            links: props.data?.links ?? [],
         };
 
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -71,6 +76,7 @@ export class LinksWidgetEditor extends React.Component<{}, StateType> {
             <br />
             {this.state.links.map((link: Link, index: number) => 
                 <LinksWidgetEditorLink
+                    key={link.url}
                     link={link}
                     onLinkChange={(link: Link) => {
                         const links = this.state.links;
@@ -88,6 +94,10 @@ export class LinksWidgetEditor extends React.Component<{}, StateType> {
                 <input type="text" name="url"/>
                 <input type="submit" value="Add link"/>
             </form>
+            <button onClick={() => this.props.onSubmit?.({
+                name: this.state.name,
+                links: this.state.links,
+            })}>Save</button>
         </WidgetEditorBox>
     }
 }

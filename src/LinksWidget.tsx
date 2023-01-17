@@ -5,14 +5,13 @@ export type Link = {
     url: string,
 };
 
-type PropsType = {
+export type LinksWidgetPropsType = {
     name: string,
     links: Link[],
 };
 
-export class LinksWidget extends React.Component<PropsType> {
-
-    constructor(props: PropsType) {
+export class LinksWidget extends React.Component<LinksWidgetPropsType> {
+    constructor(props: LinksWidgetPropsType) {
         super(props);
     }
 
@@ -21,7 +20,7 @@ export class LinksWidget extends React.Component<PropsType> {
             <h1>{this.props.name}</h1>
             <ul>
                 {this.props.links.map((link: Link) => {
-                    return <li key={link.name}>
+                    return <li key={link.url}>
                         <a href={link.url}>{
                             link.name
                         }</a>
