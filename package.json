@@ -2,6 +2,9 @@
   "name": "startpage-prototype",
   "version": "0.1.0",
   "private": true,
+  "devDependencies": {
+    "@linaria/react": "^4.3.3"
+  },
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@linaria/babel-preset": "^4.3.3",
