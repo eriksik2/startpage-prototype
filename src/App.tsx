@@ -1,7 +1,3 @@
-import React from 'react';
-import logo from './logo.svg';
-import { LinksWidget } from './LinksWidget';
-import { LinksWidgetEditor } from './LinksWidgetEditor';
 import WidgetData from './WidgetData';
 import { BaseWidget } from './BaseWidget';
 import { QuoteWidget } from './QuoteWidget';

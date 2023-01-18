@@ -1,6 +1,7 @@
+/* eslint-disable no-useless-escape */
+
 import React from "react";
 import { Link, LinksWidgetPropsType } from "./LinksWidget";
-import { css } from '@linaria/core';
 import { styled } from '@linaria/react';
 
 
@@ -82,7 +83,7 @@ export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
         event.preventDefault();
         const data = new FormData(event.target as HTMLFormElement);
         const url = data.get("url") as string;
-        const name = new RegExp("^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:.\/\n\?]+)(?:\..+)").exec(url)?.[1] ?? url;
+        const name = new RegExp(`^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:.\/\n\?]+)(?:\..+)`).exec(url)?.[1] ?? url;
         const capName = name.charAt(0).toUpperCase() + name.slice(1);
         const fmtUrl = (url.startsWith("http") || url.startsWith("https")) ? url : "https://" + url;
         const links = this.state.links;

@@ -1,5 +1,4 @@
 import React from "react";
-import { satisfies } from "semver";
 import { LinksWidget } from "./LinksWidget";
 import { LinksWidgetEditor } from "./LinksWidgetEditor";
 

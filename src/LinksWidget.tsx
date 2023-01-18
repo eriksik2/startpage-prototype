@@ -44,9 +44,6 @@ export type LinksWidgetPropsType = {
 };
 
 export class LinksWidget extends React.Component<LinksWidgetPropsType> {
-    constructor(props: LinksWidgetPropsType) {
-        super(props);
-    }
 
     render() {
         return <StyledLinksWidget>
@@ -89,7 +86,7 @@ class SingleLink extends React.Component<{ link: Link }> {
     render() {
         return <a href={this.props.link.url}>
             <StyledSingleLink key={this.props.link.url}>
-                <img height="34" width="34" src={`http://www.google.com/s2/favicons?domain=${this.props.link.url}`} />
+                <img height="34" width="34" alt="" src={`http://www.google.com/s2/favicons?domain=${this.props.link.url}`} />
                 {this.props.link.name}
             </StyledSingleLink>
         </a>;

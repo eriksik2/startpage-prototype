@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "@linaria/core"
 import { styled } from "@linaria/react"
 import dateFormat from "dateformat";
 
@@ -160,7 +159,7 @@ export class WeatherWidget extends React.Component<WeatherWidgetPropsType, Weath
             <StyledWeatherWidget>
                 {this.state.weather.map((day: WeatherDay, index: number) => {
                     return <div className="day" key={day.date.toString()}>
-                        {index == 0
+                        {index === 0
                             ? <div>Today</div>
                             : <div>{dateFormat(day.date, "dddd")}</div>
                         }
