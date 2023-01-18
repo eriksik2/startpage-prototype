@@ -6,6 +6,7 @@ import { LinksWidgetEditor } from './LinksWidgetEditor';
 import WidgetData from './WidgetData';
 import { BaseWidget } from './BaseWidget';
 import { QuoteWidget } from './QuoteWidget';
+import { DateTimeWidget } from './DateTimeWidget';
 
 
 function App() {
@@ -13,6 +14,12 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <DateTimeWidget 
+          showTime = {true} 
+          showDate = {true} 
+          showDayOfWeek = {true} 
+          showYear = {false} 
+        />
         <QuoteWidget applesPerWeek = {12} />
         <BaseWidget
           data={WidgetData.fromJson(
