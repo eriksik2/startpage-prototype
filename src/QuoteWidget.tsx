@@ -6,7 +6,8 @@ const StyledQuoteWidget = styled.div`
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
     font-size: 1.5em;
     text-align: center;
-    font-family: "Great Vibes", cursive;
+    font-style: italic;
+    padding: 3em 3em;
 `
 
 export class QuoteWidget extends React.Component<any, any> {

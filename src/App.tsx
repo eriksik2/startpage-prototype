@@ -1,19 +1,24 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
 import { LinksWidget } from './LinksWidget';
 import { LinksWidgetEditor } from './LinksWidgetEditor';
 import WidgetData from './WidgetData';
 import { BaseWidget } from './BaseWidget';
 import { QuoteWidget } from './QuoteWidget';
 import { DateTimeWidget } from './DateTimeWidget';
+import { styled } from '@linaria/react';
 
+const StyledApp = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap');
+  background-color: #1E1F25;
+  height: 100vh;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <StyledApp className="App">
         <DateTimeWidget 
           showTime = {true} 
           showDate = {true} 
@@ -32,8 +37,7 @@ function App() {
             }
           )}
         />
-      </header>
-    </div>
+    </StyledApp>
   );
 }
 
