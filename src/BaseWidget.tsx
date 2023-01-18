@@ -2,21 +2,17 @@ import { styled } from "@linaria/react";
 import React from "react";
 import WidgetData from "./WidgetData";
 
+const hideEditButton = true;
 
 const StyledBaseWidget = styled.div`
-    border: 1px solid #000000;
     padding: 10px;
     margin: 10px;
-    background-color: #ffffff;
-    width: 300px;
-    height: 300px;
-    color: #000000;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    
+
 `;
 
 
@@ -69,7 +65,7 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
                 ? this.renderEditor()
                 : this.renderDisplay()
             }
-            {this.state.isEditing
+            {this.state.isEditing || hideEditButton
                 ? null
                 : <button onClick={() => this.setState({ isEditing: true })}>Edit</button>
             }

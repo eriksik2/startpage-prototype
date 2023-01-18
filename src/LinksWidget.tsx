@@ -2,6 +2,7 @@ import { styled } from "@linaria/react";
 import React from "react";
 
 const StyledLinksWidget = styled.div`
+    font-size: 0.8em;
 
     ul {
         padding: 0px;
@@ -19,6 +20,16 @@ const StyledLinksWidget = styled.div`
         font-size: 24px;
         font-weight: bold;
         text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    a:visited {
+        text-decoration: none;
+        color: white;
     }
 `;
 
@@ -78,10 +89,8 @@ class SingleLink extends React.Component<{ link: Link }> {
     render() {
         return <a href={this.props.link.url}>
             <StyledSingleLink key={this.props.link.url}>
-                <img height="32" width="32" src={`http://www.google.com/s2/favicons?domain=${this.props.link.url}`} />
-                <a>{
-                    this.props.link.name
-                }</a>
+                <img height="34" width="34" src={`http://www.google.com/s2/favicons?domain=${this.props.link.url}`} />
+                {this.props.link.name}
             </StyledSingleLink>
         </a>;
     }

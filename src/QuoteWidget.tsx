@@ -7,11 +7,15 @@ const StyledQuoteWidget = styled.div`
     font-size: 1.5em;
     text-align: center;
     font-style: italic;
-    padding: 3em 3em;
+    padding: 1em 2em;
 `
 
-export class QuoteWidget extends React.Component<any, any> {
-    constructor(props: any) {
+type QuoteWidgetStateType = {
+    quote: string | null,
+};
+
+export class QuoteWidget extends React.Component<{}, QuoteWidgetStateType> {
+    constructor(props: {}) {
         super(props);
         this.state = {
             quote: null,

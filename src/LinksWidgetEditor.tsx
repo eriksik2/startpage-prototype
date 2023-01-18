@@ -5,8 +5,6 @@ import { styled } from '@linaria/react';
 
 
 const WidgetEditorBox = styled.div`
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -16,8 +14,10 @@ const WidgetEditorBox = styled.div`
         width: 100%;
         flex: none;
     }
+    
 
     input.name {
+        color: white;
         margin: 0px;
         margin-bottom: 5px;
         padding: 0px;
@@ -28,13 +28,16 @@ const WidgetEditorBox = styled.div`
         font-weight: bold;
     }
     input.name.small {
+        color: white;
         font-size: 16px;
     }
     input.name:focus {
+        color: white;
         outline: none;
     }
 
     .listItem {
+        color: white;
         margin-top: 20px;
         display: flex;
         flex-direction: row;
@@ -43,6 +46,7 @@ const WidgetEditorBox = styled.div`
         align-items: center;
 
         input.name {
+            color: white;
             width: 100%;
         }
     }
