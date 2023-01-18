@@ -1,8 +1,9 @@
 import { styled } from "@linaria/react";
 import React from "react";
+import { BsGearFill } from "react-icons/bs";
 import WidgetData from "./WidgetData";
 
-const hideEditButton = true;
+const hideEditButton = false;
 
 const StyledBaseWidget = styled.div`
     padding: 10px;
@@ -12,6 +13,45 @@ const StyledBaseWidget = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+`;
+
+const StyledWidgetHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+`;
+
+const StyledWidgetBody = styled.div`
+
+    .widgetBody {
+        transition: all 0.5s ease;
+    }
+
+    .widgetBody.editing {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+`;
+
+const StyledEditorContainer = styled.div`
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(38, 38, 44, 1);
+`;
+
+const StyledDisplayContainer = styled.div`
 
 `;
 
@@ -48,6 +88,14 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
                         ),
                     });
                 },
+                onChange: (data: any) => {
+                    this.setState({
+                        data: new WidgetData(
+                            this.state.data.type,
+                            data,
+                        ),
+                    });
+                },
             },
         );
     }
@@ -61,14 +109,25 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
 
     public render() {
         return <StyledBaseWidget>
-            {this.state.isEditing
-                ? this.renderEditor()
-                : this.renderDisplay()
-            }
-            {this.state.isEditing || hideEditButton
-                ? null
-                : <button onClick={() => this.setState({ isEditing: true })}>Edit</button>
-            }
+            <StyledWidgetHeader>
+                {hideEditButton
+                    ? null
+                    : <BsGearFill onClick={() => this.setState({ isEditing: true })}/>
+                }
+            </StyledWidgetHeader>
+            <StyledWidgetBody>
+                <div className={"widgetBody " + (this.state.isEditing ? "editing" : "")}>
+                    {this.state.isEditing
+                        ? <StyledEditorContainer>
+                            {this.renderEditor()}
+                        </StyledEditorContainer>
+                        : <div></div>
+                    }
+                </div>
+                <StyledDisplayContainer>
+                    {this.renderDisplay()}
+                </StyledDisplayContainer>
+            </StyledWidgetBody>
         </StyledBaseWidget>;
     }
 }

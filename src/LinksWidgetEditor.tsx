@@ -61,6 +61,7 @@ type StateType = {
 type PropsType = {
     data?: LinksWidgetPropsType,
     onSubmit?: (data: LinksWidgetPropsType) => void,
+    onChange?: (data: LinksWidgetPropsType) => void,
 };
 
 export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
@@ -77,6 +78,10 @@ export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
 
     handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ name: event.target.value });
+        this.props.onChange?.({
+            name: event.target.value,
+            links: this.state.links,
+        });
     }
 
     handleAddLink(event: React.FormEvent<HTMLFormElement>) {
@@ -89,6 +94,10 @@ export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
         const links = this.state.links;
         links.push({ name: capName, url: fmtUrl });
         this.setState({ links });
+        this.props.onChange?.({
+            name: this.state.name,
+            links: links,
+        });
     }
 
     render() {
@@ -109,11 +118,19 @@ export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
                             const links = this.state.links;
                             links[index] = link;
                             this.setState({ links });
+                            this.props.onChange?.({
+                                name: this.state.name,
+                                links: links,
+                            });
                         }}
                         onLinkRemove={() => {
                             const links = this.state.links;
                             links.splice(index, 1);
                             this.setState({ links });
+                            this.props.onChange?.({
+                                name: this.state.name,
+                                links: links,
+                            });
                         }}
                     />
                 )}
@@ -143,6 +160,7 @@ class LinksWidgetEditorLink extends React.Component<LinksWidgetEditorLinkPropsTy
         super(props);
 
         this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleUrlChange = this.handleUrlChange.bind(this);
     }
 
     handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {

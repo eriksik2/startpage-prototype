@@ -4,11 +4,13 @@ import dateFormat from "dateformat";
 
 const StyledDateTimeWidget = styled.div`
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap');
-    font-size: 10em;
+    font-size: min(20vw, 10em);
     font-weight: 300;
     text-align: center;
     font-family: "Montserrat", sans-serif;
     margin: 0;
+
+    max-width: 100%;
 
     .Date {
         font-size: 0.3em;

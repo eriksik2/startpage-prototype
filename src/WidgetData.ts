@@ -1,10 +1,19 @@
+import { styled } from "@linaria/react";
 import React from "react";
+import { DateTimeWidget } from "./DateTimeWidget";
+import { DateTimeWidgetEditor } from "./DateTimeWidgetEditor";
 import { LinksWidget } from "./LinksWidget";
 import { LinksWidgetEditor } from "./LinksWidgetEditor";
+import { QuoteWidget } from "./QuoteWidget";
+import { QuoteWidgetEditor } from "./QuoteWidgetEditor";
+import { WeatherWidget } from "./WeatherWidget";
+import { WeatherWidgetEditor } from "./WeatherWidgetEditor";
+
 
 export type WidgetEditorProps<T extends React.ComponentType<any>> = {
     data?: React.ComponentProps<T>,
     onSubmit?: (data: React.ComponentProps<T>) => void,
+    onChange?: (data: React.ComponentProps<T>) => void,
 };
 
 type WidgetPair<T extends React.ComponentType<any>> = {
@@ -16,6 +25,18 @@ const widgets = [
         display: LinksWidget,
         editor: LinksWidgetEditor,
     },
+    {
+        display: DateTimeWidget,
+        editor: DateTimeWidgetEditor,
+    },
+    {
+        display: QuoteWidget,
+        editor: QuoteWidgetEditor,
+    },
+    {
+        display: WeatherWidget,
+        editor: WeatherWidgetEditor,
+    }
 ] satisfies WidgetPair<any>[];
 
 class WidgetData<T extends React.ComponentType<any> = React.ComponentType<any>> {
@@ -32,6 +53,10 @@ class WidgetData<T extends React.ComponentType<any> = React.ComponentType<any>> 
         this.props = props;
         this.display = widgets.find((w) => w.display.name === this.type)!.display as React.ComponentType<React.ComponentProps<T>>;
         this.editor = widgets.find((w) => w.display.name === this.type)!.editor as React.ComponentType<WidgetEditorProps<T>>;
+    }
+
+    static of<P>(comp: React.ComponentType<P>, props: P): WidgetData<React.ComponentType<P>> {
+        return new WidgetData(comp.name, props);
     }
 
     getDisplayComponent(): React.ComponentType<React.ComponentProps<T>> {
