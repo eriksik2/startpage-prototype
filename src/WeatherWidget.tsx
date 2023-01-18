@@ -115,16 +115,18 @@ type WeatherWidgetPropsType = {
     dailyShowMinTemp?: boolean,
     dailyShowWeatherCode?: boolean,
     hourlyShowTemp?: boolean,
+    hourlyIndicateCurrentTime?: boolean,
 };
 
 export const WeatherWidgetDefaultProps: WeatherWidgetPropsType = {
     daysShown: 5,
-    hoursShown: 5,
+    hoursShown: 7,
     temperatureUnit: "celsius",
     dailyShowMaxTemp: true,
     dailyShowMinTemp: true,
     dailyShowWeatherCode: true,
     hourlyShowTemp: true,
+    hourlyIndicateCurrentTime: false,
 };
 
 type WeatherWidgetStateType = {
@@ -339,6 +341,7 @@ export class WeatherWidget extends React.Component<WeatherWidgetPropsType, Weath
                                 }
                                 temperatureUnit={this.props.temperatureUnit}
                                 showTemp={this.props.hourlyShowTemp}
+                                indicateCurrentTime={this.props.hourlyIndicateCurrentTime}
                                 samples={this.getHoursShown()}
                             />
                         </div>
@@ -347,6 +350,7 @@ export class WeatherWidget extends React.Component<WeatherWidgetPropsType, Weath
                                 key={this.state.showDetails}
                                 temperatureUnit={this.props.temperatureUnit}
                                 showTemp={this.props.hourlyShowTemp}
+                                indicateCurrentTime={this.props.hourlyIndicateCurrentTime}
                                 samples={this.getHoursShown()}
                             />
                         </div>

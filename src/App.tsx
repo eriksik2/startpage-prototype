@@ -4,6 +4,9 @@ import { QuoteWidget } from './QuoteWidget';
 import { DateTimeWidget } from './DateTimeWidget';
 import { styled } from '@linaria/react';
 import { WeatherWidget, WeatherWidgetDefaultProps } from './WeatherWidget';
+import React from 'react';
+
+export const IsEditModeContext = React.createContext(false);
 
 const StyledAppAndBackground = styled.div`
   .App>div {
@@ -46,39 +49,61 @@ const StyledRowLayout = styled.div`
   max-width: 1000px;
 `
 
-function App() {
-  return (
-    <StyledAppAndBackground>
-      <StyledBackground />
-      <StyledApp className="App">
-        <BaseWidget data={WidgetData.of(DateTimeWidget, {
-          showTime: true,
-          showDate: true,
-          showDayOfWeek: true,
-          showYear: false,
-        })}/>
-        <BaseWidget data={WidgetData.of(QuoteWidget, {})}/>
-        <StyledRowLayout>
-          <BaseWidget data={WidgetData.of(WeatherWidget, WeatherWidgetDefaultProps)}/>
-          <BaseWidget
-            data={WidgetData.fromJson(
-              {
-                type: "LinksWidget",
-                props: {
-                  name: "",
-                  links: [
-                    {"name": "Google", "url": "https://www.google.com"},
-                    {"name": "Netflix", "url": "https://www.netflix.com"},
-                    {"name": "Reddit", "url": "https://www.reddit.com"},
-                  ],
-                },
-              }
-            )}
-          />
-        </StyledRowLayout>
-      </StyledApp>
-    </StyledAppAndBackground>
-  );
+type AppWidgetData = {
+  
+}
+
+type AppStateType = {
+  isEditMode: boolean,
+}
+
+class App extends React.Component<{}, AppStateType> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      isEditMode: false,
+    };
+  }
+
+  render() {
+    return (
+      <StyledAppAndBackground>
+        <StyledBackground />
+        <StyledApp className="App">
+          <header>
+            <button onClick={() => this.setState({isEditMode: !this.state.isEditMode})}>Edit</button>
+          </header>
+          <IsEditModeContext.Provider value={this.state.isEditMode}>
+            <BaseWidget data={WidgetData.of(DateTimeWidget, {
+              showTime: true,
+              showDate: true,
+              showDayOfWeek: true,
+              showYear: false,
+            })}/>
+            <BaseWidget data={WidgetData.of(QuoteWidget, {})}/>
+            <StyledRowLayout>
+              <BaseWidget data={WidgetData.of(WeatherWidget, WeatherWidgetDefaultProps)}/>
+              <BaseWidget
+                data={WidgetData.fromJson(
+                  {
+                    type: "LinksWidget",
+                    props: {
+                      name: "",
+                      links: [
+                        {"name": "Google", "url": "https://www.google.com"},
+                        {"name": "Netflix", "url": "https://www.netflix.com"},
+                        {"name": "Reddit", "url": "https://www.reddit.com"},
+                      ],
+                    },
+                  }
+                )}
+              />
+            </StyledRowLayout>
+          </IsEditModeContext.Provider>
+        </StyledApp>
+      </StyledAppAndBackground>
+    );
+  }
 }
 
 export default App;

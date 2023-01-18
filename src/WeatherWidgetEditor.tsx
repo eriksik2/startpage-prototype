@@ -81,6 +81,9 @@ export class WeatherWidgetEditor extends React.Component<PropsType, StateType> {
                 <label htmlFor="hourlyShowTemp">Temperature</label>
                 <input type="checkbox" name="hourlyShowTemp" checked={this.state.data!.hourlyShowTemp} onChange={e => this.handleToggle("hourlyShowTemp", e)} />
                 <br />
+                <label htmlFor="hourlyIndicateTime">Indicate current time</label>
+                <input type="checkbox" name="hourlyIndicateTime" checked={this.state.data!.hourlyIndicateCurrentTime} onChange={e => this.handleToggle("hourlyIndicateCurrentTime", e)} />
+                <br />
                 <input type="submit" value="Save" />
             </form>
         </div>

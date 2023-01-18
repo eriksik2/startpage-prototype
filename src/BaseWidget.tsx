@@ -1,9 +1,9 @@
 import { styled } from "@linaria/react";
 import React from "react";
 import { BsGearFill } from "react-icons/bs";
+import { IsEditModeContext } from "./App";
 import WidgetData from "./WidgetData";
 
-const hideEditButton = false;
 
 const StyledBaseWidget = styled.div`
     padding: 10px;
@@ -14,6 +14,14 @@ const StyledBaseWidget = styled.div`
     justify-content: space-between;
     align-items: center;
 
+    div.background.edit-mode {
+        background-color: rgba(255, 255, 255, 0.186);
+        background-size: 40px 40px;
+        background-image:
+            linear-gradient(to right, #6f6f6fa5 1px, transparent 1px),
+            linear-gradient(to bottom, #6f6f6fa5 1px, transparent 1px);
+    }
+
 `;
 
 const StyledWidgetHeader = styled.div`
@@ -22,6 +30,11 @@ const StyledWidgetHeader = styled.div`
     justify-content: flex-end;
     align-items: center;
     width: 100%;
+
+    background-color: rgba(255, 255, 255, 0.467);
+    border-color: rgba(255, 255, 255, 0.821);
+
+    padding: 2px;
 `;
 
 const StyledWidgetBody = styled.div`
@@ -72,6 +85,11 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
             isEditing: false,
             data: props.data,
         };
+        
+        this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleDragEnter = this.handleDragEnter.bind(this);
     }
 
     renderEditor() {
@@ -107,27 +125,63 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
         )
     }
 
+    handleDragStart(e: React.DragEvent<HTMLDivElement>) {
+        e.dataTransfer.setData("text/plain", JSON.stringify(this.state.data));
+    }
+
+
+    handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+    }
+
+    handleDragEnter(e: React.DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+    }
+
+    handleDrop(e: React.DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+        const data = WidgetData.fromJson(JSON.parse(e.dataTransfer.getData("text/plain")));
+        this.setState({
+            data: data,
+        });
+        e.dataTransfer.clearData();
+        e.dataTransfer.setData("text/plain", JSON.stringify(this.state.data));
+    }
+    
+
     public render() {
-        return <StyledBaseWidget>
-            <StyledWidgetHeader>
-                {hideEditButton
-                    ? null
-                    : <BsGearFill onClick={() => this.setState({ isEditing: true })}/>
-                }
-            </StyledWidgetHeader>
-            <StyledWidgetBody>
-                <div className={"widgetBody " + (this.state.isEditing ? "editing" : "")}>
-                    {this.state.isEditing
-                        ? <StyledEditorContainer>
-                            {this.renderEditor()}
-                        </StyledEditorContainer>
-                        : <div></div>
+        return <IsEditModeContext.Consumer>
+            {isEditMode => (
+                <StyledBaseWidget
+                    draggable={isEditMode}
+                    onDrop={this.handleDrop}
+                    onDragEnter={this.handleDragEnter}
+                    onDragOver={this.handleDragOver}
+                    onDragStart={this.handleDragStart}
+                >
+                    {isEditMode
+                        ? <StyledWidgetHeader>
+                            <BsGearFill onClick={() => this.setState({ isEditing: true })}/>
+                        </StyledWidgetHeader>
+                        : null
                     }
-                </div>
-                <StyledDisplayContainer>
-                    {this.renderDisplay()}
-                </StyledDisplayContainer>
-            </StyledWidgetBody>
-        </StyledBaseWidget>;
+                    <div className={"background " + (isEditMode ? "edit-mode" : "")}>
+                        <StyledWidgetBody>
+                            <div className={"widgetBody " + (this.state.isEditing ? "editing" : "")}>
+                                {this.state.isEditing
+                                    ? <StyledEditorContainer>
+                                        {this.renderEditor()}
+                                    </StyledEditorContainer>
+                                    : <div></div>
+                                }
+                            </div>
+                            <StyledDisplayContainer>
+                                {this.renderDisplay()}
+                            </StyledDisplayContainer>
+                        </StyledWidgetBody>
+                    </div>
+                </StyledBaseWidget>
+            )}
+        </IsEditModeContext.Consumer>;
     }
 }

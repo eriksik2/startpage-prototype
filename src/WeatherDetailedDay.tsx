@@ -6,7 +6,24 @@ import { StyledUnit } from "./WeatherWidget";
 const StyledWeatherDetailedDay = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: stretch;
+    align-items: stretch;
+    align-content: stretch;
+    
+
+    div.weather-now-indicator {
+        position: relative;
+        margin-right: -1px;
+        width: 1px;
+        background-color: red;
+    }
+    div.weather-hours {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: calc(100% - 1px);
+        padding: 0.5em;
+    }
 
 `
 
@@ -16,7 +33,16 @@ const StyledWeatherHour = styled.div`
     justify-content: space-around;
     align-items: center;
 
-    margin: 0 10px;
+    margin: 0;
+
+    p {
+        margin: 0;
+    }
+
+    p.weather-hour {
+        font-size: 0.8em;
+        margin-bottom: 0.5em;
+    }
 `
 
 type WeatherHour = {
@@ -29,6 +55,7 @@ type WeatherDeatiledDayProps = {
     samples?: number,
     showTemp?: boolean,
     temperatureUnit?: "celsius" | "fahrenheit",
+    indicateCurrentTime?: boolean,
 }
 
 type WeatherDeatiledDayState = {
@@ -49,10 +76,11 @@ export class WeatherDeatiledDay extends React.Component<WeatherDeatiledDayProps,
     resample(data: WeatherHour[]): WeatherHour[] {
         const samples = this.getSamples();
         const result = [];
-        for (let i = 0; i < samples; i++) {
+        for (let i = 0; i < samples - 1; i++) {
             const index = Math.floor(i * data.length / samples);
             result.push(data[index]);
         }
+        result.push(data[data.length - 1]);
         return result;
     }
 
@@ -70,7 +98,6 @@ export class WeatherDeatiledDay extends React.Component<WeatherDeatiledDayProps,
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const startDate = new Date(year, month, day);
         const endDate = new Date(year, month, day);
-        endDate.setDate(endDate.getDate() + 1);
         console.log(dateFormat(startDate, "yyyy-mm-dd"))
         const fullUrl = url + [
             `latitude=${52.52}`,
@@ -106,25 +133,35 @@ export class WeatherDeatiledDay extends React.Component<WeatherDeatiledDayProps,
     }
 
     render() {
+        const now = new Date();
+        const nowPercentage = (now.getHours() * 60 + now.getMinutes()) / (24 * 60) * 100;
+        const isToday = this.props.date != null && dateFormat(this.props.date, "yyyy-mm-dd") === dateFormat(now, "yyyy-mm-dd");
         return <StyledWeatherDetailedDay>
-            {this.state.weather.map((hour) => {
-                return <StyledWeatherHour>
-                    <p>{dateFormat(hour.date, "HH")}h</p>
-                    {this.props.showTemp
-                        ? <p>{this.renderTemperature(hour.temp)}</p>
-                        : null
-                    }
-                </StyledWeatherHour>
-            })}
-            {this.state.weather.length === 0
-                ? <StyledWeatherHour>
-                    <p style={{color: "transparent"}}>{"."}</p>
-                    {this.props.showTemp
-                        ? <p style={{color: "transparent"}}>{"."}</p>
-                        : null
-                    }
-                </StyledWeatherHour>
-                : <></>}
+            {isToday && this.props.indicateCurrentTime
+                ? <div className="weather-now-indicator" style={{left:`${10 + nowPercentage*0.8}%`}}/>
+                : null
+            }
+            <div className="weather-hours">
+                {this.state.weather.map((hour) => {
+                    return <StyledWeatherHour>
+                        <p className="weather-hour">{dateFormat(hour.date, "HH:MM")}</p>
+                        {this.props.showTemp
+                            ? <p>{this.renderTemperature(hour.temp)}</p>
+                            : null
+                        }
+                    </StyledWeatherHour>
+                })}
+                {this.state.weather.length === 0
+                    ? <StyledWeatherHour>
+                        <p style={{color: "transparent"}}>{"."}</p>
+                        {this.props.showTemp
+                            ? <p style={{color: "transparent"}}>{"."}</p>
+                            : null
+                        }
+                    </StyledWeatherHour>
+                    : <></>
+                }
+            </div>
         </StyledWeatherDetailedDay>
     }
 }
