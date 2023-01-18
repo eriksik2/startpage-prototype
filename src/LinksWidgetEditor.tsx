@@ -5,13 +5,21 @@ import { styled } from '@linaria/react';
 
 
 const WidgetEditorBox = styled.div`
-    border: 1px solid #000000;
-    padding: 10px;
-    padding-top: 0px;
-    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    .flexSquare {
+        width: 100%;
+        flex: none;
+    }
 
     input.name {
-        margin: 5px;
+        margin: 0px;
+        margin-bottom: 5px;
         padding: 0px;
         border: 0;
         border-bottom: 1px solid #000000;
@@ -24,6 +32,19 @@ const WidgetEditorBox = styled.div`
     }
     input.name:focus {
         outline: none;
+    }
+
+    .listItem {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        input.name {
+            width: 100%;
+        }
     }
 `;
 
@@ -67,37 +88,41 @@ export class LinksWidgetEditor extends React.Component<PropsType, StateType> {
 
     render() {
         return <WidgetEditorBox>
-            <input
-                className="name"
-                placeholder="Widget name"
-                value={this.state.name}
-                onChange={this.handleNameChange}
-            />
-            <br />
-            {this.state.links.map((link: Link, index: number) => 
-                <LinksWidgetEditorLink
-                    key={link.url}
-                    link={link}
-                    onLinkChange={(link: Link) => {
-                        const links = this.state.links;
-                        links[index] = link;
-                        this.setState({ links });
-                    }}
-                    onLinkRemove={() => {
-                        const links = this.state.links;
-                        links.splice(index, 1);
-                        this.setState({ links });
-                    }}
+            <div className="flexSquare">
+                <input
+                    className="name"
+                    placeholder="Widget name"
+                    value={this.state.name}
+                    onChange={this.handleNameChange}
                 />
-            )}
-            <form onSubmit={this.handleAddLink}>
-                <input type="text" name="url"/>
-                <input type="submit" value="Add link"/>
-            </form>
-            <button onClick={() => this.props.onSubmit?.({
-                name: this.state.name,
-                links: this.state.links,
-            })}>Save</button>
+                <br />
+                {this.state.links.map((link: Link, index: number) => 
+                    <LinksWidgetEditorLink
+                        key={link.url}
+                        link={link}
+                        onLinkChange={(link: Link) => {
+                            const links = this.state.links;
+                            links[index] = link;
+                            this.setState({ links });
+                        }}
+                        onLinkRemove={() => {
+                            const links = this.state.links;
+                            links.splice(index, 1);
+                            this.setState({ links });
+                        }}
+                    />
+                )}
+            </div>
+            <div className="flexSquare">
+                <form onSubmit={this.handleAddLink}>
+                    <input type="text" name="url"/>
+                    <input type="submit" value="Add link"/>
+                </form>
+                <button onClick={() => this.props.onSubmit?.({
+                    name: this.state.name,
+                    links: this.state.links,
+                })}>Save</button>
+            </div>
         </WidgetEditorBox>
     }
 }
@@ -130,7 +155,7 @@ class LinksWidgetEditorLink extends React.Component<LinksWidgetEditorLinkPropsTy
     }
 
     render() {
-        return <div>
+        return <div className="listItem">
             <input className="name small" type="text" value={this.props.link.name} onChange={this.handleNameChange}/>
             <input type="text" value={this.props.link.url} onChange={this.handleUrlChange}/>
             <button onClick={this.props.onLinkRemove}>Remove</button>
