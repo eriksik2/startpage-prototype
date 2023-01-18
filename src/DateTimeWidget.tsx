@@ -10,7 +10,6 @@ const StyledDateTimeWidget = styled.div`
     text-align: center;
     font-family: "Montserrat", sans-serif;
     margin: 0;
-    padding: 1em;
 
     .Date {
         font-size: 0.3em;

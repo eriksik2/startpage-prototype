@@ -8,10 +8,22 @@ const StyledQuoteWidget = styled.div`
     text-align: center;
     font-style: italic;
     padding: 1em 2em;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
+const StyledAuthor = styled.div`
+    align-self: flex-end;
+    font-size: 0.6em;
+    font-style: normal;
 `
 
 type QuoteWidgetStateType = {
     quote: string | null,
+    author: string | null,
 };
 
 export class QuoteWidget extends React.Component<{}, QuoteWidgetStateType> {
@@ -19,6 +31,7 @@ export class QuoteWidget extends React.Component<{}, QuoteWidgetStateType> {
         super(props);
         this.state = {
             quote: null,
+            author: null,
         };
     }
 
@@ -26,7 +39,7 @@ export class QuoteWidget extends React.Component<{}, QuoteWidgetStateType> {
         fetch("https://api.quotable.io/random")
             .then((response) => response.json())
             .then((data) => {
-                this.setState({ quote: data.content });
+                this.setState({ quote: data.content, author: data.author });
             });
     }
 
@@ -36,6 +49,10 @@ export class QuoteWidget extends React.Component<{}, QuoteWidgetStateType> {
                 {this.state.quote == null 
                     ? "" 
                     : this.state.quote
+                }
+                {this.state.author == null
+                    ? ""
+                    : <StyledAuthor> - {this.state.author}</StyledAuthor>
                 }
             </StyledQuoteWidget>
         )
