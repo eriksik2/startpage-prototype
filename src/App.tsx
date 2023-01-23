@@ -5,6 +5,7 @@ import { DateTimeWidget } from './DateTimeWidget';
 import { styled } from '@linaria/react';
 import { WeatherWidget, WeatherWidgetDefaultProps } from './WeatherWidget';
 import React from 'react';
+import { TimerWidget } from './TimerWidget';
 
 export const IsEditModeContext = React.createContext(false);
 
@@ -50,7 +51,7 @@ const StyledRowLayout = styled.div`
 `
 
 type AppWidgetData = {
-  
+
 }
 
 type AppStateType = {
@@ -80,6 +81,7 @@ class App extends React.Component<{}, AppStateType> {
               showDayOfWeek: true,
               showYear: false,
             })}/>
+            <BaseWidget data={WidgetData.of(TimerWidget, {})}/>
             <BaseWidget data={WidgetData.of(QuoteWidget, {})}/>
             <StyledRowLayout>
               <BaseWidget data={WidgetData.of(WeatherWidget, WeatherWidgetDefaultProps)}/>

@@ -93,8 +93,11 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
     }
 
     renderEditor() {
+        if(this.state.data.getEditorComponent() === null) {
+            return null;
+        }
         return React.createElement<any>(
-            this.state.data.getEditorComponent(),
+            this.state.data.getEditorComponent()!,
             {
                 data: this.state.data.props,
                 onSubmit: (data: any) => {
@@ -161,7 +164,10 @@ export class BaseWidget extends React.Component<BaseWidgetPropsType, BaseWidgetS
                 >
                     {isEditMode
                         ? <StyledWidgetHeader>
-                            <BsGearFill onClick={() => this.setState({ isEditing: true })}/>
+                            {this.state.data.getEditorComponent() !== null
+                                ? <BsGearFill onClick={() => this.setState({ isEditing: true })}/>
+                                : <BsGearFill style={{color: "transparent"}}/>
+                            }
                         </StyledWidgetHeader>
                         : null
                     }

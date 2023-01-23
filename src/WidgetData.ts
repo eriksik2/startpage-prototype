@@ -6,6 +6,7 @@ import { LinksWidget } from "./LinksWidget";
 import { LinksWidgetEditor } from "./LinksWidgetEditor";
 import { QuoteWidget } from "./QuoteWidget";
 import { QuoteWidgetEditor } from "./QuoteWidgetEditor";
+import { TimerWidget } from "./TimerWidget";
 import { WeatherWidget } from "./WeatherWidget";
 import { WeatherWidgetEditor } from "./WeatherWidgetEditor";
 
@@ -18,7 +19,7 @@ export type WidgetEditorProps<T extends React.ComponentType<any>> = {
 
 type WidgetPair<T extends React.ComponentType<any>> = {
     display: React.ComponentType<React.ComponentProps<T>>,
-    editor: React.ComponentType<WidgetEditorProps<T>>,
+    editor?: React.ComponentType<WidgetEditorProps<T>>,
 };
 const widgets = [
     {
@@ -36,6 +37,9 @@ const widgets = [
     {
         display: WeatherWidget,
         editor: WeatherWidgetEditor,
+    },
+    {
+        display: TimerWidget,
     }
 ] satisfies WidgetPair<any>[];
 
@@ -43,7 +47,7 @@ class WidgetData<T extends React.ComponentType<any> = React.ComponentType<any>> 
     type: string;
     props: any;
     display: React.ComponentType<React.ComponentProps<T>>;
-    editor: React.ComponentType<WidgetEditorProps<T>>;
+    editor: React.ComponentType<WidgetEditorProps<T>> | null;
 
     constructor(widgetType: string, props: any) {
         if (!widgets.find((w) => w.display.name === widgetType)) {
@@ -52,7 +56,8 @@ class WidgetData<T extends React.ComponentType<any> = React.ComponentType<any>> 
         this.type = widgetType;
         this.props = props;
         this.display = widgets.find((w) => w.display.name === this.type)!.display as React.ComponentType<React.ComponentProps<T>>;
-        this.editor = widgets.find((w) => w.display.name === this.type)!.editor as React.ComponentType<WidgetEditorProps<T>>;
+        const editor = widgets.find((w) => w.display.name === this.type)!.editor;
+        this.editor = (editor == undefined ? null : editor) as React.ComponentType<WidgetEditorProps<T>> | null;
     }
 
     static of<P>(comp: React.ComponentType<P>, props: P): WidgetData<React.ComponentType<P>> {
@@ -63,7 +68,7 @@ class WidgetData<T extends React.ComponentType<any> = React.ComponentType<any>> 
         return this.display;
     }
 
-    getEditorComponent(): React.ComponentType<WidgetEditorProps<T>> {
+    getEditorComponent(): React.ComponentType<WidgetEditorProps<T>> | null {
         return this.editor;
     }
 
